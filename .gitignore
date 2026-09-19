@@ -1,0 +1,6 @@
+/main
+/main.exe
+build.conf
+/.c3/
+*.o
+c3nob
