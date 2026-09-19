@@ -124,7 +124,7 @@ fn void main(String[] args)
     defer out_name.free();
     
     out_name.append_cstr("main");
-    out_name.append_cstr(c3nob::nob_target_ext());
+    out_name.append_cstr(c3nob::nob_target_ext()); // Handled automatically by nob!
     out_name.append_null();
 
     cmd.@append((ZString)out_name.items);
