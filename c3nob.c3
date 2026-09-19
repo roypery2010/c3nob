@@ -145,3 +145,7 @@ fn ZString nob_target_ext() @feat(WIN32)
 {
     return ".exe";
 }
+fn ZString c3nob_target_ext()
+{
+    return "";
+}

@@ -51,7 +51,7 @@ fn void main(String[] args)
 
         // LICENSE.md
         String license_content = "MIT License\n\n"
-                                 "Copyright (c) 2026 Roy Perry <roypery2010@gmail.com>\n\n"
+                                 "Copyright (c) 2026\n\n"
                                  "Permission is hereby granted, free of charge, to any person obtaining a copy\n"
                                  "of this software and associated documentation files (the \"Software\"), to deal\n"
                                  "in the Software without restriction, including without limitation the rights\n"
@@ -78,8 +78,7 @@ fn void main(String[] args)
                                    "/main.exe\n"
                                    "build.conf\n"
                                    "/.c3/\n"
-                                   "*.o\n"
-								   "c3nob\n";
+                                   "*.o\n";
         if (!c3nob::c3nob_write_entire_file(".gitignore", gitignore_content))
         {
             io::printn("[ERROR] Failed to write .gitignore!");
@@ -103,7 +102,12 @@ fn void main(String[] args)
     C3Nob_Cmd cmd = {};
     defer cmd.free();
 
-    cmd.@append("../c3/c3c");
+    $if env::WIN32:
+        cmd.@append("c3c");
+    $else
+        cmd.@append("../c3/c3c");
+    $endif
+
     cmd.@append("compile");
     cmd.@append("main.c3");
 
@@ -124,7 +128,7 @@ fn void main(String[] args)
     defer out_name.free();
     
     out_name.append_cstr("main");
-    out_name.append_cstr(c3nob::nob_target_ext()); // Handled automatically by nob!
+    out_name.append_cstr(c3nob::c3nob_target_ext());
     out_name.append_null();
 
     cmd.@append((ZString)out_name.items);
@@ -137,7 +141,7 @@ fn void main(String[] args)
 
     io::printn("[INFO] Build successful! Running executable...");
 
-    // 4. Run the compiled executable with correct target prefix
+    // 4. Run the compiled executable automatically
     C3Nob_Cmd run_cmd = {};
     defer run_cmd.free();
 
@@ -150,7 +154,7 @@ fn void main(String[] args)
         run_path.append_cstr("./main");
     $endif
 
-    run_path.append_cstr(c3nob::nob_target_ext());
+    run_path.append_cstr(c3nob::c3nob_target_ext());
     run_path.append_null();
 
     run_cmd.@append((ZString)run_path.items);
